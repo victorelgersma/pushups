@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { MinusIcon, PlusIcon, RotateCcwIcon } from "lucide-react";
 
-interface DailyPushups{
+interface DailyPushups {
   day: string;
   number: number;
 }
 
-export default function SingleTally() {
-  const [tallyData, setTallyData] = useState<TallyEntry[]>([]);
+export default function DailyTally() {
+  const [tallyData, setTallyData] = useState<DailyPushups[]>([]);
   const [todayCount, setTodayCount] = useState(0);
-  console.log("yoo")
+  
   // Get today's date in YYYY-MM-DD format
   const getTodayString = () => {
     const today = new Date();
     return today.toISOString().split('T')[0];
   };
 
-  
   // Load tally data from localStorage on component mount
   useEffect(() => {
     const savedData = localStorage.getItem('pushups');
@@ -66,34 +66,50 @@ export default function SingleTally() {
   const reset = () => updateTodayCount(0);
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold mb-2">Today's Count</h3>
-        <div className="text-6xl font-bold my-8">{todayCount}</div>
-      </div>
+    <Card className="max-w-md mx-auto">
+      <CardHeader>
+        <CardTitle className="text-3xl text-center">Today</CardTitle>
+      </CardHeader>
       
-      <div className="flex justify-center gap-4">
-        <Button 
-          variant="destructive"
-          size="lg"
-          onClick={decrement}
-          aria-label="Decrease count"
-          className="h-14 w-14 rounded-full text-xl p-0"
-        >
-          <MinusIcon className="h-6 w-6" />
-        </Button>
+      <CardContent>
+        <div className="text-center">
+          <div className="text-6xl font-bold my-8">{todayCount}</div>
+        </div>
         
-        <Button 
-          variant="default"
-          size="lg"
-          onClick={increment}
-          aria-label="Increase count"
-          className="h-14 w-14 rounded-full text-xl p-0 bg-green-500 hover:bg-green-600"
-        >
-          <PlusIcon className="h-6 w-6" />
-        </Button>
-      </div>
+        <div className="flex justify-center gap-4">
+          <Button 
+            variant="destructive"
+            size="lg"
+            onClick={decrement}
+            aria-label="Decrease count"
+            className="h-14 w-14 rounded-full text-xl p-0"
+          >
+            <MinusIcon className="h-6 w-6" />
+          </Button>
+          
+          <Button 
+            variant="default"
+            size="lg"
+            onClick={increment}
+            aria-label="Increase count"
+            className="h-14 w-14 rounded-full text-xl p-0 bg-green-500 hover:bg-green-600"
+          >
+            <PlusIcon className="h-6 w-6" />
+          </Button>
+        </div>
+      </CardContent>
       
-    </div>
+      <CardFooter className="flex justify-center">
+        <Button 
+          variant="outline"
+          size="sm"
+          onClick={reset}
+          className="flex items-center gap-2"
+        >
+          <RotateCcwIcon className="h-4 w-4" />
+          Reset
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
