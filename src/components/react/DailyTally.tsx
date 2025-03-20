@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { MinusIcon, PlusIcon, RotateCcwIcon } from "lucide-react";
+import { PlusIcon, RotateCcwIcon } from "lucide-react";
 
 interface DailyPushups {
   day: string;
@@ -88,9 +88,9 @@ export default function DailyTally() {
     }
   };
   
-  const decrement = () => {
+  const reset = () => {
     if (todayCount !== null) {
-      updateTodayCount(Math.max(0, todayCount - 1));
+      updateTodayCount(0);
     }
   };
 
@@ -113,27 +113,30 @@ export default function DailyTally() {
           </div>
         </div>
         
-        <div className="flex justify-center gap-4">
+        {/* Large increment button */}
+        <Button 
+          variant="default"
+          size="lg"
+          onClick={increment}
+          aria-label="Add one push-up"
+          className="w-full h-20 rounded-lg text-xl bg-green-500 hover:bg-green-600 transition-all hover:scale-105"
+          disabled={isLoading}
+        >
+          <PlusIcon className="size-8 mr-2" />
+        </Button>
+        
+        {/* Small reset button */}
+        <div className="mt-6 text-center">
           <Button 
-            variant="destructive"
-            size="lg"
-            onClick={decrement}
-            aria-label="Decrease count"
-            className="h-14 w-14 rounded-full text-xl p-0"
+            variant="outline"
+            size="sm"
+            onClick={reset}
+            aria-label="Reset count"
             disabled={isLoading}
+            className="px-3 py-1 text-xs"
           >
-            <MinusIcon className="h-6 w-6" />
-          </Button>
-          
-          <Button 
-            variant="default"
-            size="lg"
-            onClick={increment}
-            aria-label="Increase count"
-            className="h-14 w-14 rounded-full text-xl p-0 bg-green-500 hover:bg-green-600"
-            disabled={isLoading}
-          >
-            <PlusIcon className="h-6 w-6" />
+            <RotateCcwIcon className="h-3 w-3 mr-1" />
+            Reset
           </Button>
         </div>
       </CardContent>

@@ -51,7 +51,7 @@ export default function Yesterday() {
     <Alert className="max-w-md mx-auto mt-6">
       <CalendarIcon className="h-4 w-4" />
       <AlertTitle className="flex items-center justify-between">
-        Yesterday's Count
+      Yesterday
         <span className="text-2xl font-bold">{yesterdayCount}</span>
       </AlertTitle>
       <AlertDescription className="text-sm text-muted-foreground">
