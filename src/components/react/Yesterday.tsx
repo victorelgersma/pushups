@@ -10,13 +10,18 @@ export default function Yesterday() {
 
   // Get yesterday's date in YYYY-MM-DD format
   const getYesterdayString = () => {
-    // Create date object for yesterday at noon to avoid timezone edge cases
+    // Create date object for yesterday
     const now = new Date();
-    now.setHours(12, 0, 0, 0);
-    now.setDate(now.getDate() - 1);
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
     
-    // Extract just the date part (YYYY-MM-DD)
-    return now.toISOString().split('T')[0];
+    // Get date components in local timezone
+    const year = yesterday.getFullYear();
+    const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+    const day = String(yesterday.getDate()).padStart(2, '0');
+    
+    // Format as YYYY-MM-DD
+    return `${year}-${month}-${day}`;
   };
 
   // Format date for display (e.g., "March 19, 2025")
