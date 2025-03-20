@@ -106,10 +106,6 @@ export default function DailyTally() {
 
   return (
     <Card className="max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl text-muted-foreground text-center">{todayDate}</CardTitle>
-      </CardHeader>
-      
       <CardContent>
         <div className="text-center">
           <div className="text-6xl font-bold my-8">
