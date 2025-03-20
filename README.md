@@ -4,21 +4,19 @@ A simple web app to track your daily push-ups with persistent local storage.
 
 ## Features
 
-Track today's push-up count with increment and decrement buttons
-View yesterday's push-up count for progress tracking
-Data persists in your browser using localStorage
-Clean, minimalist interface with shadcn/ui components
-Light/dark mode support
-Mobile-friendly design
+* Track today's push-up count with increment and decrement buttons
+* View yesterday's push-up count for progress tracking
+* Data persists in your browser using localStorage
+* Clean, minimalist interface with shadcn/ui components
+* Mobile-friendly design
 
 # Technologies Used
 
-Astro - Web framework for content-focused websites
-React - UI component library
-TypeScript - Type-safe JavaScript
-shadcn/ui - Reusable UI components
-Tailwind CSS - Utility-first CSS framework
-Lucide Icons - Beautiful open-source icons
+* Astro - Web framework for content-focused websites
+* React - UI component library
+* TypeScript - Type-safe JavaScript
+* shadcn/ui - Reusable UI components
+* Tailwind CSS - Utility-first CSS framework
 
 # Getting Started
 
