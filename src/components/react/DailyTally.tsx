@@ -27,7 +27,6 @@ export default function DailyTally() {
       
       // Find today's entry if it exists
       const todayStr = getTodayString();
-      console.log(todayStr);
       const todayEntry = parsedData.find(entry => entry.day === todayStr);
       if (todayEntry) {
         setTodayCount(todayEntry.number);
