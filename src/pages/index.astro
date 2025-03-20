@@ -10,12 +10,38 @@ import Yesterday from "src/components/react/Yesterday";
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>Push up</title>
+        <title>Push Up Logger</title>
+        <script is:inline>
+            // Inline script to prevent flash of wrong theme
+            const theme = (() => {
+                if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+                    return localStorage.getItem('theme');
+                }
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    return 'dark';
+                }
+                return 'light';
+            })();
+            
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
     </head>
-    <body class="flex flex-col min-h-screen">
+    <body class="flex flex-col min-h-screen bg-background text-foreground">
         <main class="container mx-auto px-4 py-8 flex-grow">
-            <header class="mb-8 text-center">
-                <h1 class="text-4xl font-bold">Push ups</h1>
+            <header class="mb-8 flex items-center justify-between">
+                <h1 class="text-4xl font-bold">Push Up Logger</h1>
+                <button 
+                  id="theme-toggle"
+                  class="rounded-full p-2 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  aria-label="Toggle theme"
+                >
+                  <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                  <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 A7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
             </header>
 
             <div class="max-w-2xl mx-auto">
@@ -45,5 +71,24 @@ import Yesterday from "src/components/react/Yesterday";
                 </p>
             </div>
         </footer>
+
+        <script>
+          // Theme toggle functionality
+          document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            
+            themeToggle.addEventListener('click', () => {
+              const isDark = document.documentElement.classList.contains('dark');
+              
+              if (isDark) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+              } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+              }
+            });
+          });
+        </script>
     </body>
 </html>
