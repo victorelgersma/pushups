@@ -4,16 +4,26 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { PlusIcon, RotateCcwIcon } from "lucide-react";
 import type { DailyPushups } from '@/types';
 
-
 export default function DailyTally() {
   const [tallyData, setTallyData] = useState<DailyPushups[]>([]);
   const [todayCount, setTodayCount] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [todayDate, setTodayDate] = useState<string>("");
   
   // Get today's date in YYYY-MM-DD format
   const getTodayString = () => {
     const today = new Date();
     return today.toISOString().split('T')[0];
+  };
+  
+  // Format date for display (e.g., "March 19, 2025")
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: 'long', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
   };
 
   // Load tally data from localStorage on component mount
@@ -22,6 +32,10 @@ export default function DailyTally() {
       setIsLoading(true);
       
       try {
+        // Set today's formatted date
+        const todayStr = getTodayString();
+        setTodayDate(formatDate(todayStr));
+        
         const savedData = localStorage.getItem('pushups');
         
         if (savedData) {
@@ -29,7 +43,6 @@ export default function DailyTally() {
           setTallyData(parsedData);
           
           // Find today's entry if it exists
-          const todayStr = getTodayString();
           const todayEntry = parsedData.find(entry => entry.day === todayStr);
           
           if (todayEntry) {
@@ -94,7 +107,7 @@ export default function DailyTally() {
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-3xl text-center">Today</CardTitle>
+        <CardTitle className="text-2xl text-muted-foreground text-center">{todayDate}</CardTitle>
       </CardHeader>
       
       <CardContent>
@@ -119,7 +132,7 @@ export default function DailyTally() {
           className="w-full h-20 rounded-lg text-xl bg-green-500 hover:bg-green-600 transition-all hover:scale-105"
           disabled={isLoading}
         >
-          <PlusIcon className="size-8 mr-2" />
+          <PlusIcon className="h-12 w-12" />
         </Button>
         
         {/* Small reset button */}
