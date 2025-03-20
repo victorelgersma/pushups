@@ -1,8 +1,7 @@
 ---
 import Layout from "./components/Layout.astro";
-import TallyList from "./components/react/TallyList";
-import NewTallyForm from "./components/react/NewTallyForm";
 import "../styles/global.css";
+import SingleTally from "./components/react/SingleTally";
 ---
 
 <html lang="en">
@@ -16,16 +15,13 @@ import "../styles/global.css";
 	<body>
 		<main class="container mx-auto px-4 py-8">
 			<header class="mb-8 text-center">
-				<h1 class="text-4xl font-bold mb-2">Tall-E</h1>
-				<p class="text-lg text-gray-600">A simple tally counter to keep track of anything</p>
+				<h1> Push up logger</h1>
 			</header>
 
 			<div class="max-w-2xl mx-auto">
-				<NewTallyForm client:load />
-				
 				<div class="mt-8">
 					<h2 class="text-2xl font-semibold mb-4">Your Tallies</h2>
-					<TallyList client:only />
+					<SingleTally client:load />
 				</div>
 			</div>
 		</main>
