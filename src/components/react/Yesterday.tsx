@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CalendarIcon } from "lucide-react";
-import { TallyEntry } from '@/types';
+import type { DailyPushups } from 'src/types';
+
 
 export default function Yesterday() {
   const [yesterdayCount, setYesterdayCount] = useState<number>(0);
@@ -29,10 +30,11 @@ export default function Yesterday() {
   useEffect(() => {
     const savedData = localStorage.getItem('pushups');
     const yesterdayStr = getYesterdayString();
+    console.log(yesterdayStr);
     setYesterdayDate(formatDate(yesterdayStr));
     
     if (savedData) {
-      const parsedData = JSON.parse(savedData) as TallyEntry[];
+      const parsedData = JSON.parse(savedData) as DailyPushups[];
       const yesterdayEntry = parsedData.find(entry => entry.day === yesterdayStr);
       
       if (yesterdayEntry) {
