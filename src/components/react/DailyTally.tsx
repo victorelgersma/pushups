@@ -10,7 +10,8 @@ interface DailyPushups {
 
 export default function DailyTally() {
   const [tallyData, setTallyData] = useState<DailyPushups[]>([]);
-  const [todayCount, setTodayCount] = useState(0);
+  const [todayCount, setTodayCount] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Get today's date in YYYY-MM-DD format
   const getTodayString = () => {
@@ -20,24 +21,45 @@ export default function DailyTally() {
 
   // Load tally data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem('pushups');
-    if (savedData) {
-      const parsedData = JSON.parse(savedData) as DailyPushups[];
-      setTallyData(parsedData);
+    const loadData = async () => {
+      setIsLoading(true);
       
-      // Find today's entry if it exists
-      const todayStr = getTodayString();
-      const todayEntry = parsedData.find(entry => entry.day === todayStr);
-      if (todayEntry) {
-        setTodayCount(todayEntry.number);
+      try {
+        const savedData = localStorage.getItem('pushups');
+        
+        if (savedData) {
+          const parsedData = JSON.parse(savedData) as DailyPushups[];
+          setTallyData(parsedData);
+          
+          // Find today's entry if it exists
+          const todayStr = getTodayString();
+          const todayEntry = parsedData.find(entry => entry.day === todayStr);
+          
+          if (todayEntry) {
+            setTodayCount(todayEntry.number);
+          } else {
+            setTodayCount(0);
+          }
+        } else {
+          setTodayCount(0);
+        }
+      } catch (error) {
+        console.error("Error loading data:", error);
+        setTodayCount(0);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
+    
+    loadData();
   }, []);
 
   // Save tally data to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('pushups', JSON.stringify(tallyData));
-  }, [tallyData]);
+    if (!isLoading && todayCount !== null) {
+      localStorage.setItem('pushups', JSON.stringify(tallyData));
+    }
+  }, [tallyData, isLoading, todayCount]);
 
   // Update the count for today
   const updateTodayCount = (newCount: number) => {
@@ -60,9 +82,17 @@ export default function DailyTally() {
     });
   };
 
-  const increment = () => updateTodayCount(todayCount + 1);
-  const decrement = () => updateTodayCount(Math.max(0, todayCount - 1));
-  const reset = () => updateTodayCount(0);
+  const increment = () => {
+    if (todayCount !== null) {
+      updateTodayCount(todayCount + 1);
+    }
+  };
+  
+  const decrement = () => {
+    if (todayCount !== null) {
+      updateTodayCount(Math.max(0, todayCount - 1));
+    }
+  };
 
   return (
     <Card className="max-w-md mx-auto">
@@ -72,7 +102,15 @@ export default function DailyTally() {
       
       <CardContent>
         <div className="text-center">
-          <div className="text-6xl font-bold my-8">{todayCount}</div>
+          <div className="text-6xl font-bold my-8">
+            {isLoading ? (
+              <div className="h-16 flex items-center justify-center">
+                <div className="w-8 h-8 border-4 border-t-primary rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              todayCount
+            )}
+          </div>
         </div>
         
         <div className="flex justify-center gap-4">
@@ -82,6 +120,7 @@ export default function DailyTally() {
             onClick={decrement}
             aria-label="Decrease count"
             className="h-14 w-14 rounded-full text-xl p-0"
+            disabled={isLoading}
           >
             <MinusIcon className="h-6 w-6" />
           </Button>
@@ -92,23 +131,12 @@ export default function DailyTally() {
             onClick={increment}
             aria-label="Increase count"
             className="h-14 w-14 rounded-full text-xl p-0 bg-green-500 hover:bg-green-600"
+            disabled={isLoading}
           >
             <PlusIcon className="h-6 w-6" />
           </Button>
         </div>
       </CardContent>
-      
-      <CardFooter className="flex justify-center">
-        <Button 
-          variant="outline"
-          size="sm"
-          onClick={reset}
-          className="flex items-center gap-2"
-        >
-          <RotateCcwIcon className="h-4 w-4" />
-          Reset
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
