@@ -13,7 +13,10 @@ export default function DailyTally() {
   // Get today's date in YYYY-MM-DD format
   const getTodayString = () => {
     const today = new Date();
-    return today.toISOString().split('T')[0];
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
   
   // Format date for display (e.g., "March 19, 2025")
