@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CalendarIcon } from "lucide-react";
-
-interface TallyEntry {
-  day: string;
-  number: number;
-}
+import { TallyEntry } from '@/types';
 
 export default function Yesterday() {
   const [yesterdayCount, setYesterdayCount] = useState<number>(0);
@@ -31,7 +27,7 @@ export default function Yesterday() {
 
   // Load yesterday's data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem('tallyData');
+    const savedData = localStorage.getItem('pushups');
     const yesterdayStr = getYesterdayString();
     setYesterdayDate(formatDate(yesterdayStr));
     
