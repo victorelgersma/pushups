@@ -8,26 +8,21 @@ export default function Yesterday() {
   const [yesterdayDate, setYesterdayDate] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
-  // Get yesterday's date in YYYY-MM-DD format using local timezone
+  // Get yesterday's date in YYYY-MM-DD format
   const getYesterdayString = () => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+    // Create date object for yesterday at noon to avoid timezone edge cases
+    const now = new Date();
+    now.setHours(12, 0, 0, 0);
+    now.setDate(now.getDate() - 1);
     
-    // Format using local timezone instead of UTC
-    const year = yesterday.getFullYear();
-    const month = String(yesterday.getMonth() + 1).padStart(2, '0');
-    const day = String(yesterday.getDate()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}`;
+    // Extract just the date part (YYYY-MM-DD)
+    return now.toISOString().split('T')[0];
   };
 
   // Format date for display (e.g., "March 19, 2025")
   const formatDate = (dateString: string) => {
-    const [year, month, day] = dateString.split('-').map(num => parseInt(num, 10));
-    // Create date object using local timezone components
-    const date = new Date(year, month - 1, day);
-    
+    // Add time component to ensure consistent parsing
+    const date = new Date(`${dateString}T12:00:00`);
     return date.toLocaleDateString('en-US', { 
       month: 'long', 
       day: 'numeric', 

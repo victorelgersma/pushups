@@ -12,16 +12,18 @@ export default function DailyTally() {
   
   // Get today's date in YYYY-MM-DD format
   const getTodayString = () => {
+    // Create date object at noon to avoid timezone edge cases
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    today.setHours(12, 0, 0, 0);
+    
+    // Extract just the date part (YYYY-MM-DD)
+    return today.toISOString().split('T')[0];
   };
   
   // Format date for display (e.g., "March 19, 2025")
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+    // Add time component to ensure consistent parsing
+    const date = new Date(`${dateString}T12:00:00`);
     return date.toLocaleDateString('en-US', { 
       month: 'long', 
       day: 'numeric', 
