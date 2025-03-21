@@ -10,7 +10,7 @@ A simple web app to track your daily push-ups with persistent local storage.
 * Clean, minimalist interface with shadcn/ui components
 * Mobile-friendly design
 
-# Technologies Used
+## Technologies Used
 
 * Astro - Web framework for content-focused websites
 * React - UI component library
@@ -18,7 +18,18 @@ A simple web app to track your daily push-ups with persistent local storage.
 * shadcn/ui - Reusable UI components
 * Tailwind CSS - Utility-first CSS framework
 
-# Getting Started
+## /src breakdown
+
+Total lines: 794
+Lines by subfolder (count and percentage):
+  components: 470 lines (59.19%)
+  styles: 120 lines (15.11%)
+  pages: 106 lines (13.35%)
+  utils: 88 lines (11.08%)
+  lib: 6 lines (0.76%)
+  types: 4 lines (0.50%)
+
+## Getting Started
 
 ## Prerequisites
 

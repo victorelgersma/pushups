@@ -10,7 +10,7 @@ export default function Yesterday() {
 
   // Get yesterday's date in YYYY-MM-DD format
   const getYesterdayString = () => {
-    // Create date object for yesterday
+    // can't we do this in one line? 
     const now = new Date();
     const yesterday = new Date(now);
     yesterday.setDate(now.getDate() - 1);
