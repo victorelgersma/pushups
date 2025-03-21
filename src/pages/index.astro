@@ -37,18 +37,6 @@ import Yesterday from "src/components/react/Yesterday";
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div class="text-center md:text-left">
                         <h1 class="text-4xl font-bold">Push Ups</h1>
-                        <p class="text-muted-foreground mt-1 md:mt-2">
-                            {(() => {
-                                // Create date object at noon to avoid timezone edge cases
-                                const now = new Date();
-                                now.setHours(12, 0, 0, 0);
-                                return now.toLocaleDateString('en-US', { 
-                                    month: 'long', 
-                                    day: 'numeric', 
-                                    year: 'numeric'
-                                });
-                            })()}
-                        </p>
                     </div>
                 </div>
             </header>
