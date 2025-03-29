@@ -123,7 +123,7 @@ export default function DailyTally() {
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader className="pb-2">
-        <CardTitle className="text-2xl text-muted-foreground text-center">{todayDate}</CardTitle>
+        <CardTitle className="text-2xl text-muted-foreground text-center">Today</CardTitle>
       </CardHeader>
       
       <CardContent className="pt-0 space-y-6">
