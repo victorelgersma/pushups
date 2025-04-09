@@ -38,6 +38,17 @@ export default function PushupChart() {
     });
   };
 
+  // Split month and day into separate elements
+  const formatMonth = (dateString: string) => {
+    const date = new Date(`${dateString}T12:00:00`);
+    return date.toLocaleDateString('en-US', { month: 'short' });
+  };
+
+  const formatDay = (dateString: string) => {
+    const date = new Date(`${dateString}T12:00:00`);
+    return date.getDate();
+  };
+
   // Calculate bar height in pixels
   const getBarHeight = (value: number) => {
     const max = 25; // Maximum value that would reach full height
@@ -71,7 +82,10 @@ export default function PushupChart() {
                     ></div>
                   </div>
                   <div className="mt-2 text-xs text-muted-foreground">
-                    {formatDate(day.day)}
+                    <div className="text-center">
+                      <div className="text-xs text-muted-foreground">{formatMonth(day.day)}</div>
+                      <div className="text-xs font-medium">{formatDay(day.day)}</div>
+                    </div>
                   </div>
                   <div className="mt-1 text-xs font-medium">
                     {day.number}
