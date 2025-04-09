@@ -4,14 +4,6 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { PlusIcon, MinusIcon, RotateCcwIcon } from "lucide-react";
 import type { DailyPushups } from '@/types';
 
-// Add this near the top of your DailyTally.tsx file
-const triggerHapticFeedback = (pattern: number | number[]) => {
-  // Check if vibration API is supported
-  if (navigator.vibrate) {
-    navigator.vibrate(pattern);
-  }
-};
-
 export default function DailyTally() {
   const [tallyData, setTallyData] = useState<DailyPushups[]>([]);
   const [todayCount, setTodayCount] = useState<number | null>(null);
@@ -112,7 +104,6 @@ export default function DailyTally() {
   const increment = () => {
     if (todayCount !== null) {
       updateTodayCount(todayCount + 1);
-      triggerHapticFeedback(10); // Short 10ms vibration for increment
     }
   };
   
@@ -120,14 +111,12 @@ export default function DailyTally() {
   const decrement = () => {
     if (todayCount !== null && todayCount > 0) {
       updateTodayCount(todayCount - 1);
-      triggerHapticFeedback(10); // Short 10ms vibration for decrement
     }
   };
   
   const reset = () => {
     if (todayCount !== null) {
       updateTodayCount(0);
-      triggerHapticFeedback([20, 30, 20]); // Pattern: vibrate-pause-vibrate for reset
     }
   };
 
