@@ -1,4 +1,5 @@
 ---
+import PushupChart from "@/components/react/PushupChart";
 import "../styles/global.css";
 import DailyTally from "src/components/react/DailyTally";
 import Yesterday from "src/components/react/Yesterday";
@@ -45,6 +46,7 @@ import Yesterday from "src/components/react/Yesterday";
                 <div class="mt-8">
                     <DailyTally client:load />
                     <Yesterday client:load />
+                    <PushupChart client:load />
                 </div>
             </div>
         </main>
