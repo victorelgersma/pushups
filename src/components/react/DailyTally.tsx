@@ -9,24 +9,19 @@ export default function DailyTally() {
   const [todayCount, setTodayCount] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [todayDate, setTodayDate] = useState<string>("");
-  
+  const [interval, setInterval] = useState<number>(1); // New state for INTERVAL
+
   // Get today's date in YYYY-MM-DD format
   const getTodayString = () => {
-    // Create date object for today
     const today = new Date();
-    
-    // Get date components in local timezone
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
-    
-    // Format as YYYY-MM-DD
     return `${year}-${month}-${day}`;
   };
-  
+
   // Format date for display (e.g., "March 19, 2025")
   const formatDate = (dateString: string) => {
-    // Add time component to ensure consistent parsing
     const date = new Date(`${dateString}T12:00:00`);
     return date.toLocaleDateString('en-US', { 
       month: 'long', 
@@ -35,25 +30,17 @@ export default function DailyTally() {
     });
   };
 
-  // Load tally data from localStorage on component mount
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
-      
       try {
-        // Set today's formatted date
         const todayStr = getTodayString();
         setTodayDate(formatDate(todayStr));
-        
         const savedData = localStorage.getItem('pushups');
-        
         if (savedData) {
           const parsedData = JSON.parse(savedData) as DailyPushups[];
           setTallyData(parsedData);
-          
-          // Find today's entry if it exists
           const todayEntry = parsedData.find(entry => entry.day === todayStr);
-          
           if (todayEntry) {
             setTodayCount(todayEntry.number);
           } else {
@@ -69,51 +56,42 @@ export default function DailyTally() {
         setIsLoading(false);
       }
     };
-    
     loadData();
   }, []);
 
-  // Save tally data to localStorage whenever it changes
   useEffect(() => {
     if (!isLoading && todayCount !== null) {
       localStorage.setItem('pushups', JSON.stringify(tallyData));
     }
   }, [tallyData, isLoading, todayCount]);
 
-  // Update the count for today
   const updateTodayCount = (newCount: number) => {
     const todayStr = getTodayString();
     setTodayCount(newCount);
-    
     setTallyData(prevData => {
       const newData = [...prevData];
       const todayIndex = newData.findIndex(entry => entry.day === todayStr);
-      
       if (todayIndex >= 0) {
-        // Update existing entry for today
         newData[todayIndex] = { ...newData[todayIndex], number: newCount };
       } else {
-        // Create new entry for today
         newData.push({ day: todayStr, number: newCount });
       }
-      
       return newData;
     });
   };
 
   const increment = () => {
     if (todayCount !== null) {
-      updateTodayCount(todayCount + 1);
+      updateTodayCount(todayCount + interval); // Use INTERVAL
     }
   };
-  
-  // New decrement function
+
   const decrement = () => {
     if (todayCount !== null && todayCount > 0) {
-      updateTodayCount(todayCount - 1);
+      updateTodayCount(Math.max(0, todayCount - interval)); // Use INTERVAL
     }
   };
-  
+
   const reset = () => {
     if (todayCount !== null) {
       updateTodayCount(0);
@@ -138,27 +116,44 @@ export default function DailyTally() {
             )}
           </div>
         </div>
+
+        {/* Interval Picker */}
+        <div className="text-center">
+          <label htmlFor="interval" className="block text-sm font-medium text-muted-foreground">
+            Set Interval
+          </label>
+          <select
+            id="interval"
+            value={interval}
+            onChange={(e) => setInterval(Number(e.target.value))}
+            className="mt-1 block w-1/2 mx-auto rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+          >
+            <option value={1}>1</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
         
         {/* Button row for increment/decrement */}
         <div className="grid grid-cols-2 gap-2">
-          {/* Decrement button */}
           <Button 
             variant="outline"
             size="lg"
             onClick={decrement}
-            aria-label="Remove one push-up"
+            aria-label="Remove push-ups"
             className="h-20 rounded-lg text-xl border-red-300 dark:border-red-700 hover:bg-red-100 dark:hover:bg-red-900 transition-all"
             disabled={isLoading || todayCount === 0}
           >
             <MinusIcon className="h-8 w-8" />
           </Button>
           
-          {/* Increment button */}
           <Button 
             variant="default"
             size="lg"
             onClick={increment}
-            aria-label="Add one push-up"
+            aria-label="Add push-ups"
             className="h-20 rounded-lg text-xl bg-green-500 hover:bg-green-600 transition-all hover:scale-105"
             disabled={isLoading}
           >
